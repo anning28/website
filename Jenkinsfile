@@ -68,7 +68,6 @@ pipeline {
 
         NPM_CONFIG_FUND = 'false'
 
-        NODE_ENV = 'production'
     }
 
 
