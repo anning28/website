@@ -16,7 +16,7 @@ pipeline {
 
         string(
             name: 'DEPLOY_BRANCH',
-            defaultValue: 'Develop',
+            defaultValue: 'master',
             description: '允许自动部署的分支'
         )
 
