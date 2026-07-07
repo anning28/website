@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import AppLayout from '../layout/AppLayout';
-import DashboardPage from '../pages/DashboardPage';
-import LoginPage from '../pages/LoginPage';
-import MenuPage from '../pages/MenuPage';
+import DashboardPage from '../pages/dashboard';
+import LoginPage from '../pages/login';
+import MenuPage from '../pages/menu';
 import { useAuthStore } from '../store/useAuthStore';
 
 function RequireAuth() {

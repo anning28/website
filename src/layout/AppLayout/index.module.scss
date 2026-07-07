@@ -1,0 +1,194 @@
+.appShell {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 248px minmax(0, 1fr);
+  background: #eef2f7;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 24px 18px;
+  color: #ffffff;
+  background: #172238;
+}
+
+.sidebarBrand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.sidebarBrandMark {
+  display: inline-grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 8px;
+  color: #172238;
+  background: #ffffff;
+}
+
+.sidebarNav {
+  display: grid;
+  gap: 8px;
+}
+
+.sidebarLink {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  border-radius: 8px;
+  padding: 0 14px;
+  color: #c7d2e6;
+  font-weight: 700;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+  }
+}
+
+.sidebarLinkActive {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.contentShell {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 88px;
+  border-bottom: 1px solid #dde5f0;
+  padding: 18px 28px;
+  background: #ffffff;
+}
+
+.topbarEyebrow {
+  margin: 0 0 8px;
+  color: #1666d9;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.topbarTitle {
+  margin: 0;
+  color: #18202f;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.topbarActions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbarUser {
+  max-width: 180px;
+  overflow: hidden;
+  color: #667188;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 18px;
+  font-weight: 700;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.buttonSecondary {
+  color: #243047;
+  background: #e8edf5;
+
+  &:hover {
+    background: #dbe4f0;
+  }
+}
+
+.pageContent {
+  flex: 1;
+  padding: 28px;
+}
+
+@media (max-width: 760px) {
+  .appShell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .sidebarNav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sidebarLink {
+    justify-content: center;
+    padding: 0 10px;
+    text-align: center;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .topbarActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .pageContent {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 440px) {
+  .sidebarNav {
+    grid-template-columns: 1fr;
+  }
+
+  .topbarActions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .topbarActions .button {
+    width: 100%;
+  }
+}

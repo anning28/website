@@ -1,0 +1,62 @@
+.pageStack {
+  display: grid;
+  gap: 20px;
+}
+
+.heroSection {
+  border: 1px solid #d8e0ec;
+  border-radius: 8px;
+  padding: 24px;
+  background: #ffffff;
+
+  h2 {
+    margin: 0 0 10px;
+    color: #18202f;
+  }
+
+  p {
+    max-width: 680px;
+    margin: 0;
+    color: #667188;
+  }
+}
+
+.sectionEyebrow {
+  margin: 0 0 8px;
+  color: #1666d9;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.summaryGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.summaryCard {
+  display: grid;
+  gap: 10px;
+  border: 1px solid #d8e0ec;
+  border-radius: 8px;
+  padding: 20px;
+  background: #ffffff;
+
+  span {
+    color: #667188;
+    font-weight: 700;
+  }
+
+  strong {
+    color: #18202f;
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 760px) {
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+}

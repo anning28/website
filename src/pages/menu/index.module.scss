@@ -1,0 +1,84 @@
+.pageStack {
+  display: grid;
+  gap: 20px;
+}
+
+.heroSection,
+.tablePanel {
+  border: 1px solid #d8e0ec;
+  border-radius: 8px;
+  padding: 24px;
+  background: #ffffff;
+
+  h2,
+  h3 {
+    margin: 0 0 10px;
+    color: #18202f;
+  }
+
+  p {
+    max-width: 680px;
+    margin: 0;
+    color: #667188;
+  }
+}
+
+.sectionEyebrow {
+  margin: 0 0 8px;
+  color: #1666d9;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.tablePanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+
+  h3 {
+    margin: 0;
+  }
+
+  span {
+    color: #667188;
+    font-size: 14px;
+    font-weight: 700;
+  }
+}
+
+.placeholderTable {
+  display: grid;
+  border: 1px solid #d8e0ec;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.placeholderTableRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 54px;
+  padding: 0 16px;
+  background: #ffffff;
+
+  & + & {
+    border-top: 1px solid #d8e0ec;
+  }
+
+  strong {
+    color: #1666d9;
+  }
+}
+
+@media (max-width: 440px) {
+  .tablePanelHeader,
+  .placeholderTableRow {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
