@@ -1,13 +1,13 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { useAuth } from './auth/AuthContext';
-import AppLayout from './layout/AppLayout';
-import DashboardPage from './pages/DashboardPage';
-import LoginPage from './pages/LoginPage';
-import MenuPage from './pages/MenuPage';
+import AppLayout from '../layout/AppLayout';
+import DashboardPage from '../pages/DashboardPage';
+import LoginPage from '../pages/LoginPage';
+import MenuPage from '../pages/MenuPage';
+import { useAuthStore } from '../store/useAuthStore';
 
 function RequireAuth() {
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -17,7 +17,7 @@ function RequireAuth() {
 }
 
 function LoginRoute() {
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
@@ -26,7 +26,7 @@ function LoginRoute() {
   return <LoginPage />;
 }
 
-export default function App() {
+export default function AppRouter() {
   return (
     <Routes>
       <Route path="/login" element={<LoginRoute />} />

@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
-import { useAuth } from '../auth/AuthContext';
+import { useAuthStore } from '../store/useAuthStore';
 
 const menuItems = [
   { label: '首页概览', path: '/dashboard' },
@@ -9,7 +9,8 @@ const menuItems = [
 ];
 
 export default function AppLayout() {
-  const { logout, username } = useAuth();
+  const logout = useAuthStore((state) => state.logout);
+  const username = useAuthStore((state) => state.username);
   const navigate = useNavigate();
 
   const handleLogout = () => {
