@@ -161,7 +161,7 @@ export default function LoginPage() {
           {error ? <p className={styles.formError}>{error}</p> : null}
 
           <button className={getClassName(styles.button, styles.buttonPrimary)} type="submit">
-            {isRegisterMode ? '注册账号并进入' : '登录'}
+            {isRegisterMode ? '注册并进入' : '登录'}
           </button>
         </form>
       </section>
