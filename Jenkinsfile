@@ -77,6 +77,13 @@ pipeline {
       }
     }
   }
+  stage('Deploy') {
+    steps {
+        sh '''
+            rsync -av --delete dist/ /var/www/teachteachbaby/
+        '''
+    }
+  }
 
   post {
     success {
