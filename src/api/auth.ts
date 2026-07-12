@@ -1,5 +1,3 @@
-import type { StoredAuth } from '../store/authStorage';
-
 import request from './request';
 
 export type AuthCredentials = {
@@ -7,7 +5,17 @@ export type AuthCredentials = {
   password: string;
 };
 
-export type AuthResponse = StoredAuth;
+export type AuthUser = {
+  id?: string;
+  email: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type AuthResponse = {
+  token: string;
+  user: AuthUser;
+};
 
 export function loginApi(credentials: AuthCredentials) {
   return request.post<AuthResponse, AuthResponse, AuthCredentials>(

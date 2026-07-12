@@ -1,13 +1,7 @@
 import { create } from 'zustand';
 
-import { loginApi, registerApi } from '../api/auth';
-import {
-  clearStoredAuth,
-  readStoredAuth,
-  type AuthUser,
-  type StoredAuth,
-  writeStoredAuth,
-} from './authStorage';
+import { clearAuthToken, setAuthToken } from '../api/authToken';
+import { loginApi, registerApi, type AuthResponse, type AuthUser } from '../api/auth';
 
 type AuthState = {
   isAuthenticated: boolean;
@@ -27,7 +21,7 @@ function normalizePassword(password: string) {
   return password.trim();
 }
 
-function getAuthState(auth: StoredAuth | null) {
+function getAuthState(auth: AuthResponse | null) {
   return {
     isAuthenticated: Boolean(auth?.token && auth.user.email),
     username: auth?.user.email ?? '',
@@ -36,20 +30,20 @@ function getAuthState(auth: StoredAuth | null) {
   };
 }
 
-function persistAuth(auth: StoredAuth) {
-  writeStoredAuth(auth);
+function applyAuth(auth: AuthResponse) {
+  setAuthToken(auth.token);
   return getAuthState(auth);
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  ...getAuthState(readStoredAuth()),
+  ...getAuthState(null),
   login: async (username, password) => {
     const auth = await loginApi({
       email: normalizeUsername(username),
       password: normalizePassword(password),
     });
 
-    set(persistAuth(auth));
+    set(applyAuth(auth));
   },
   register: async (username, password) => {
     const auth = await registerApi({
@@ -57,10 +51,10 @@ export const useAuthStore = create<AuthState>((set) => ({
       password: normalizePassword(password),
     });
 
-    set(persistAuth(auth));
+    set(applyAuth(auth));
   },
   logout: () => {
-    clearStoredAuth();
+    clearAuthToken();
     set(getAuthState(null));
   },
 }));

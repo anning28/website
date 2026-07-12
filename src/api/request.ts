@@ -4,7 +4,7 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios';
 
-import { readStoredAuth } from '../store/authStorage';
+import { getAuthToken } from './authToken';
 
 export type ApiError = Error & {
   status?: number;
@@ -52,7 +52,7 @@ const request = axios.create({
 });
 
 request.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  const token = readStoredAuth()?.token;
+  const token = getAuthToken();
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
