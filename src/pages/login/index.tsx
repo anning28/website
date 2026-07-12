@@ -1,6 +1,7 @@
 import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import type { ApiError } from '../../api/request';
 import { useAuthStore } from '../../store/useAuthStore';
 
 import styles from './index.module.scss';
@@ -36,6 +37,38 @@ function getClassName(...classNames: Array<string | false>) {
   return classNames.filter(Boolean).join(' ');
 }
 
+function getApiErrorStatus(error: unknown) {
+  if (typeof error !== 'object' || error === null || !('status' in error)) {
+    return undefined;
+  }
+
+  const status = (error as ApiError).status;
+
+  return typeof status === 'number' ? status : undefined;
+}
+
+function getAuthErrorMessage(error: unknown, mode: AuthMode) {
+  const status = getApiErrorStatus(error);
+
+  if (status === 409 && mode === 'register') {
+    return '该邮箱已注册，请直接登录';
+  }
+
+  if (status === 401 && mode === 'login') {
+    return '账号或密码错误，请先注册或检查输入';
+  }
+
+  if (status === 400) {
+    return '请输入有效的邮箱账号和密码';
+  }
+
+  if (!status) {
+    return '网络连接异常，请稍后重试';
+  }
+
+  return '服务暂时不可用，请稍后重试';
+}
+
 export default function LoginPage() {
   const login = useAuthStore((state) => state.login);
   const register = useAuthStore((state) => state.register);
@@ -44,16 +77,25 @@ export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const isRegisterMode = mode === 'register';
 
   const handleModeChange = (nextMode: AuthMode) => {
+    if (isSubmitting) {
+      return;
+    }
+
     setMode(nextMode);
     setError('');
     setPassword('');
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
 
     const validationError = validateCredentials(username, password);
 
@@ -62,33 +104,24 @@ export default function LoginPage() {
       return;
     }
 
-    if (isRegisterMode) {
-      const registerResult = register(username, password);
+    const currentMode = mode;
 
-      if (registerResult === 'exists') {
-        setError('该邮箱已注册，请直接登录');
-        return;
-      }
+    try {
+      setIsSubmitting(true);
 
-      if (registerResult === 'invalid') {
-        setError('请输入有效的邮箱账号和密码');
-        return;
+      if (currentMode === 'register') {
+        await register(username, password);
+      } else {
+        await login(username, password);
       }
 
       setError('');
+      setIsSubmitting(false);
       navigate('/dashboard', { replace: true });
-      return;
+    } catch (requestError) {
+      setError(getAuthErrorMessage(requestError, currentMode));
+      setIsSubmitting(false);
     }
-
-    const isValid = login(username, password);
-
-    if (!isValid) {
-      setError('账号或密码错误，请先注册或检查输入');
-      return;
-    }
-
-    setError('');
-    navigate('/dashboard', { replace: true });
   };
 
   return (
@@ -113,6 +146,7 @@ export default function LoginPage() {
             )}
             role="tab"
             type="button"
+            disabled={isSubmitting}
             onClick={() => handleModeChange('login')}
           >
             登录
@@ -125,17 +159,24 @@ export default function LoginPage() {
             )}
             role="tab"
             type="button"
+            disabled={isSubmitting}
             onClick={() => handleModeChange('register')}
           >
             注册
           </button>
         </div>
 
-        <form className={styles.loginForm} noValidate onSubmit={handleSubmit}>
+        <form
+          aria-busy={isSubmitting}
+          className={styles.loginForm}
+          noValidate
+          onSubmit={handleSubmit}
+        >
           <label className={styles.field}>
             <span>账号</span>
             <input
               autoComplete="username"
+              disabled={isSubmitting}
               inputMode="email"
               name="username"
               placeholder="请输入邮箱账号"
@@ -149,6 +190,7 @@ export default function LoginPage() {
             <span>密码</span>
             <input
               autoComplete={isRegisterMode ? 'new-password' : 'current-password'}
+              disabled={isSubmitting}
               minLength={6}
               name="password"
               placeholder={isRegisterMode ? '请输入至少 6 位密码' : '请输入密码'}
@@ -160,8 +202,18 @@ export default function LoginPage() {
 
           {error ? <p className={styles.formError}>{error}</p> : null}
 
-          <button className={getClassName(styles.button, styles.buttonPrimary)} type="submit">
-            {isRegisterMode ? '注册并进入' : '登录'}
+          <button
+            className={getClassName(styles.button, styles.buttonPrimary)}
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? isRegisterMode
+                ? '注册中...'
+                : '登录中...'
+              : isRegisterMode
+                ? '注册并进入'
+                : '登录'}
           </button>
         </form>
       </section>

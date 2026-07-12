@@ -73,6 +73,11 @@
     background: #ffffff;
     box-shadow: 0 8px 18px rgba(31, 42, 68, 0.08);
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.68;
+  }
 }
 
 .authSwitchTabActive {
@@ -104,6 +109,12 @@
       border-color: #1666d9;
       box-shadow: 0 0 0 4px rgba(22, 102, 217, 0.14);
     }
+
+    &:disabled {
+      color: #667188;
+      cursor: not-allowed;
+      background: #eef2f7;
+    }
   }
 }
 
@@ -130,6 +141,12 @@
 
   &:hover {
     transform: translateY(-1px);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.72;
+    transform: none;
   }
 }
 
